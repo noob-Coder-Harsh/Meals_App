@@ -14,6 +14,8 @@ class MealDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favMeals = ref.watch(favMealsProvider);
+    final isFav = favMeals.contains(meal);
     return Scaffold(
       appBar: AppBar(title: Text(meal.title), actions: [
         IconButton(
@@ -26,17 +28,30 @@ class MealDetails extends ConsumerWidget {
                     ? 'added to Favourite'
                     : 'removed from Favourite')));
           },
-          icon: const Icon(Icons.star),
+          icon: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return RotationTransition(
+                turns: Tween<double>(begin: 0.8, end: 1).animate(animation),
+                child: child,
+              );
+            },
+            key: ValueKey(isFav),
+            child: Icon(isFav ? Icons.star : Icons.star_border),
+          ),
         )
       ]),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Image.network(
-              meal.imageUrl,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(
               height: 12,

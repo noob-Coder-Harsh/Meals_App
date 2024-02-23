@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart/';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_app/screens/categories_screen.dart';
 import 'package:meals_app/screens/filters_screen.dart';
@@ -80,7 +80,10 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       drawer: MainDrawer(
         onSelectScreen: _setScreen,
       ),
-      body: activePage,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: activePage,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white12,
         currentIndex: _selectPageIndex,
